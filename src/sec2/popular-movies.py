@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Mar 21 14:47:53 2020
+
+@author: gosundar
+"""
+from pyspark import SparkConf, SparkContext
+
+conf = SparkConf().setMaster("local").setAppName("PopularMovies")
+sc = SparkContext(conf = conf)
+
+lines = sc.textFile("/Users/archanababu/dev/repo/spark/udemy-taming-big-data/data/ml-100k/u.data")
+movies = lines.map(lambda x: (int(x.split()[1]), 1))
+movieCounts = movies.reduceByKey(lambda x, y: x + y)
+
+flipped = movieCounts.map( lambda xy: (xy[1],xy[0]) )
+sortedMovies = flipped.sortByKey()
+
+results = sortedMovies.collect()
+
+for result in results:
+    print(result)
