@@ -22,5 +22,5 @@ flipped = totalByCustomer.map(lambda x: (x[1], x[0]))
 totalByCustomerSorted = flipped.sortByKey()
 
 results = totalByCustomerSorted.collect();
-for t in results:
-    print(t)
+for result in results:
+    print(result)
